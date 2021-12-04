@@ -1,0 +1,62 @@
+{% extends 'layout.html'%}
+
+{% block body%}
+
+<div class="container">
+    <h3 class="text-center py-3"> Indicadores Pacientes</h3>
+    <div class="row py-3">
+        <div class="col-md-4 shadow p-3 mb-5 bg-body rounded ">
+            <div class="card bg-dark text-white ">
+                <img src="{{ url_for('static',filename='img/estados.jpg')}}" class="card-img" alt="...">
+                <div class="card-img-overlay">
+                  <h5 class="card-title">Paciente fumador de mayor Prioridad con estado Pendiente</h5>
+                  {% for datos in datos %}
+                  <div class="py-4">
+                    <p class="card-text"> Documento: {{datos.0}} </p>
+                    <p class="card-text"> Nombre: {{datos.1}} </p>
+                    <p class="card-text"> Apeellido: {{datos.2}} </p>
+                    <p class="card-text"> Edad: {{datos.3}} </p>
+                    <p class="card-text"> Estado: {{datos.4}} </p>
+                  </div>
+                  {% endfor%}
+                  <p class="card-text text-center">Publicado Justo Ahora</p>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-4 shadow p-3 mb-5 bg-body rounded">
+            <div class="card bg-dark text-white">
+                <img src="{{ url_for('static',filename='img/estados.jpg')}}" class="card-img" alt="...">
+                <div class="card-img-overlay">
+                  <h5 class="card-title">Paciente que tiene la menor edad con estado Pendiente</h5>
+                  {% for datos in datos2 %}
+                  <div class="py-4">
+                    <p class="card-text"> Nombres: {{datos.0}} </p>
+                    <p class="card-text"> Apeellidos: {{datos.1}} </p>
+                    <p class="card-text"> Edad: {{datos.2}} </p>
+                    <p class="card-text"> Estado: {{datos.3}} </p>
+                  </div>
+                  {% endfor%}
+                  <p class="card-text text-center">Publicado Justo Ahora</p>
+                </div>
+              </div>
+        </div>
+        <div class="col-md-4 shadow p-3 mb-5 bg-body rounded">
+            <div class="card bg-dark text-white">
+                <img src="{{ url_for('static',filename='img/estados.jpg')}}" class="card-img" alt="...">
+                <div class="card-img-overlay">
+                  <h5 class="card-title">Paciente que tiene la mayor edad con estado Pendiente </h5>
+                  {% for datos in datos3 %}
+                  <div class="py-4">
+                    <p class="card-text"> Nombres: {{datos.0}} </p>
+                    <p class="card-text"> Apeellidos: {{datos.1}} </p>
+                    <p class="card-text"> Edad: {{datos.2}} </p>
+                    <p class="card-text"> Estado: {{datos.3}} </p>
+                  </div>
+                  {% endfor%}
+                  <p class="card-text text-center">Publicado Justo Ahora</p>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

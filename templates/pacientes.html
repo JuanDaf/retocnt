@@ -1,7 +1,8 @@
 {% extends 'layout.html'%}
 
 {% block body%}
-  
+
+
 <div class="row py-4">
     <div class="col-md-6 shadow p-3 mb-5 bg-body rounded ">
         <form class="form-floating" action="/addpacientes" method="POST">
@@ -36,16 +37,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <select class="form-select" aria-label="Fumador?" name="sexo" id="check2">
-                            <option selected>Sexo</option>
+                            <option selected>Genero</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
                           </select>
                     </div>
                     <div class="col-md-6">
                         <select class="form-select" aria-label="Fumador?" name="fumador1" id="check">
-                            <option selected>Fumador?</option>
-                            <option value="1">Si</option>
-                            <option value="2">No</option>
+                            <option selected>Eres Fumador</option>
+                            <option value="0">Si</option>
+                            <option value="1">No</option>
                           </select>
                     </div>
                 </div>
@@ -75,9 +76,9 @@
                     <div class="col-md-12">
                         <div class="form-floating mb-3">
                             <select class="form-select" aria-label="Dieta?" name="dieta" id="check">
-                                <option selected>Dieta?</option>
-                                <option value="si">Si</option>
-                                <option value="no">No</option>
+                                <option selected>Haces Dieta</option>
+                                <option value="Si">Si</option>
+                                <option value="No">No</option>
                               </select>
                         </div>
                     </div>
@@ -92,8 +93,8 @@
             </form>
     </div>
 
-    <div class="col-md-6 py-2">
-        <h1 class="text-center">Logo Formulario</h1>
+    <div class="col-md-5 py-1 mx-auto">
+        <img src="{{ url_for('static',filename='img/formulario.jpg')}}" alt="" class="rounded img-fluid shadow p-3 mb-5 bg-body rounded ">
     </div>
 </div>
 
@@ -101,7 +102,7 @@
     var campo=  document.getElementById('fumador');
     var check1 =  document.getElementById('check');
     check1.addEventListener('click',function(){
-      if(check1.value == 1){
+      if(check1.value == 0){
         campo.hidden = false;
       }else{
         campo.hidden = true;

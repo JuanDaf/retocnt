@@ -1,15 +1,19 @@
 
-from flask import Flask, render_template, request, redirect, url_for
+from os import walk
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask.wrappers import Request
 from flask_mysqldb import MySQL
 
 app =  Flask(__name__)
+
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'reto'
 mysql = MySQL(app)
 
+
+app.secret_key = 'secreto'
 
 @app.route('/')
 def index():
@@ -23,6 +27,7 @@ def pacientes():
 @app.route('/addpacientes',methods=['POST'])
 def addpacientes():
     if request.method == 'POST':
+
         documento = request.form['documento']
         nombres = request.form['nombres']
         apellidos = request.form['apellidos']
@@ -35,29 +40,114 @@ def addpacientes():
         peso = request.form['peso']
         dieta = request.form.get('dieta')
 
-        if fumador == "1":
-            fumador = fumadorr +' años' 
+        if fumadorr == "":
+            fumadorr = int(fumador)
+        
+        fumadorr =  int(fumadorr)
+       
+        pesoestatura = (int(peso) / int(estatura))
+        if  pesoestatura <= (0.25):
+            pesoestatura = 1
+        elif pesoestatura >= (0.26) and pesoestatura <=(0.50):
+            pesoestatura = 2
+        elif pesoestatura >= (0.51) and pesoestatura <=(0.75):
+            pesoestatura = 3;
+        else:
+            pesoestatura = 4
+
+        prioridad = 0;
+
+        edad =  int(edad)
+        if edad >= 1 and edad <=15:
+            if edad >= 1 and edad <= 5:
+                prioridad = (pesoestatura + 3)
+            elif edad >= 6 and edad <= 12:
+                prioridad = (pesoestatura + 2)
+            elif edad >=13 and edad <=15:
+                prioridad = (pesoestatura + 1)
+
+        elif edad >= 16 and edad <= 40:
+            if fumadorr > 1:
+                prioridad = ((fumadorr /4)+ 2)
+            else:
+                prioridad = 2
+        elif edad > 41:
+            if dieta == "Si":
+                if edad >=60 and edad <= 100:
+                    prioridad = ((edad/20)+4)
+            else:
+                prioridad = ((edad /30) +3)
+        
+        if edad >=1 and edad <=40:
+            riesgo  = ((edad * prioridad)/100)
+        else:
+            riesgo =  (((edad *prioridad)/100) +5.3)
+        
+        print(fumador)
+        fumador = int(fumador)
+        if fumador == 0:
+            fumador = fumadorr  
+            estatura = estatura + ' Cm'
             con = mysql.connection.cursor()
             con.execute('INSERT INTO pacientes VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-            (documento,nombres,apellidos,edad,direccion,sexo,peso,estatura,fumador,dieta,12,'ok','ok',4))
+            (documento,nombres,apellidos,edad,direccion,sexo,peso,estatura,fumador,dieta,pesoestatura,'Pendiente',prioridad,riesgo))
             mysql.connection.commit()
         else :
-            fumador = 'no'
+            fumador = "No"
             con = mysql.connection.cursor()
             con.execute('INSERT INTO pacientes VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)',
-            (documento,nombres,apellidos,edad,direccion,sexo,peso,estatura,fumador,dieta,12,'ok','ok',4))
+            (documento,nombres,apellidos,edad,direccion,sexo,peso,estatura,fumador,dieta,pesoestatura,'Pendiente',prioridad,riesgo))
             mysql.connection.commit()
-        print(documento, nombres, apellidos, edad, direccion, sexo, peso, estatura, fumador, dieta)
-    return 'bien'
+    flash('Registro almacenado')
+    return redirect(url_for('pacientes'))
 
 @app.route('/verpacientes')
 def ver():
-    return 'verpacientes'
+    con = mysql.connection.cursor()
+    con.execute('SELECT * FROM pacientes Where Estado = "Pendiente" ORDER by Riesgo DESC' )
+    data = con.fetchall()
+    print(data)
+    return render_template('pacientesr.html', datos = data)
 
+@app.route('/verpacientesp')
+def verr():
+    con = mysql.connection.cursor()
+    con.execute('SELECT * FROM pacientes Where Estado = "Pendiente" ORDER by Prioridad DESC' )
+    data = con.fetchall()
+    print(data)
+    return render_template('pacientesp.html', datos = data)
 
-@app.route('/editar')
-def editar():
-    return 'editar'
+@app.route('/atender/<Documento>')
+def atender(Documento):
+    con = mysql.connection.cursor()
+    con.execute('UPDATE pacientes SET Estado = %s WHERE Documento = %s ', ('Atendido',Documento))
+    mysql.connection.commit()
+    flash('Paciente atendido')
+    return redirect(url_for('ver'))
+
+@app.route('/atenderr/<Documento>')
+def atenderr(Documento):
+    con = mysql.connection.cursor()
+    con.execute('UPDATE pacientes SET Estado = %s WHERE Documento = %s ', ('Atendido',Documento))
+    mysql.connection.commit()
+    flash('Paciente atendido')
+    return redirect(url_for('verr')) 
+
+@app.route('/indicadores')
+def indicador():
+    con = mysql.connection.cursor()
+    con.execute('SELECT Documento, Nombres, Apellidos, Edad, Estado  FROM pacientes Where Fumador > 1 and Estado = "Pendiente" ORDER by Prioridad' )
+    data = con.fetchall()
+    print(data)
+    con = mysql.connection.cursor()
+    con.execute('SELECT Nombres,Apellidos,MIN(Edad)as Edad, Estado  FROM pacientes Where  Estado = "Pendiente" ' )
+    data2 = con.fetchall()
+    print(data2)
+    con = mysql.connection.cursor()
+    con.execute('SELECT Nombres,Apellidos,MAX(Edad)as Edad, Estado  FROM pacientes Where  Estado = "Pendiente" ' )
+    data3 = con.fetchall()
+    print(data3)
+    return render_template('indicadores.html', datos= data, datos2 = data2, datos3 = data3)
 
 if __name__ == '__main__':
     app.run(port = 3300, debug= True)
