@@ -40,51 +40,108 @@ def addpacientes():
         peso = request.form['peso']
         dieta = request.form.get('dieta')
 
-        if fumadorr == "":
-            fumadorr = int(fumador)
         
-        fumadorr =  int(fumadorr)
+        if direccion == "" or  sexo ==""  or dieta =="" or documento == "" or nombres == "" or apellidos == "" or edad == "" or peso == ""  or estatura == ""  or fumador == "":
+            flash('Campos vacios, Corrobora Información')
+            return redirect(url_for('pacientes'))
+
+        else:
+            print('Paso por Aca')
+            if fumadorr == "":
+               fumadorr = int(fumador)
+        
+            fumadorr =  int(fumadorr)
        
-        pesoestatura = (int(peso) / int(estatura))
-        if  pesoestatura <= (0.25):
-            pesoestatura = 1
-        elif pesoestatura >= (0.26) and pesoestatura <=(0.50):
-            pesoestatura = 2
-        elif pesoestatura >= (0.51) and pesoestatura <=(0.75):
-            pesoestatura = 3;
-        else:
-            pesoestatura = 4
-
-        prioridad = 0;
-
-        edad =  int(edad)
-        if edad >= 1 and edad <=15:
-            if edad >= 1 and edad <= 5:
-                prioridad = (pesoestatura + 3)
-            elif edad >= 6 and edad <= 12:
-                prioridad = (pesoestatura + 2)
-            elif edad >=13 and edad <=15:
-                prioridad = (pesoestatura + 1)
-
-        elif edad >= 16 and edad <= 40:
-            if fumadorr > 1:
-                prioridad = ((fumadorr /4)+ 2)
+             #Peso estatura, esto en funcion de la div de peso entre estatura, obteniedo un punto flotante que se valiad de 0 a 1. Por ende se toma referncia de 0 a 1  
+            pesoestatura = (int(peso) / int(estatura))
+            if  pesoestatura <= (0.25):
+                pesoestatura = 1
+            elif pesoestatura >= (0.26) and pesoestatura <=(0.50):
+                pesoestatura = 2
+            elif pesoestatura >= (0.51) and pesoestatura <=(0.75):
+                pesoestatura = 3;
             else:
-                prioridad = 2
-        elif edad > 41:
-            if dieta == "Si":
-                if edad >=60 and edad <= 100:
-                    prioridad = ((edad/20)+4)
+                pesoestatura = 4
+        
+            #Seccion de calcuala la prioridad para el paciente 
+            prioridad = 0;
+
+            edad =  int(edad)
+            if edad >= 1 and edad <=15:
+                if edad >= 1 and edad <= 5:
+                    prioridad = (pesoestatura + 3)
+                elif edad >= 6 and edad <= 12:
+                    prioridad = (pesoestatura + 2)
+                elif edad >=13 and edad <=15:
+                    prioridad = (pesoestatura + 1)
+
+            elif edad >= 16 and edad <= 40:
+                if fumadorr > 1:
+                    prioridad = ((fumadorr /4)+ 2)
+                else:
+                    prioridad = 2
+            elif edad > 41:
+                if dieta == "Si":
+                    if edad >=60 and edad <= 100:
+                        prioridad = ((edad/20)+4)
+                else:
+                    prioridad = ((edad /30) +3)
+        
+            #Seccion de calcular el riesgo 
+            if edad >=1 and edad <=40:
+                riesgo  = ((edad * prioridad)/100)
             else:
-                prioridad = ((edad /30) +3)
+                riesgo =  (((edad *prioridad)/100) +5.3)
+
+
+
+
+            if fumadorr == "":
+                fumadorr = int(fumador)
         
-        if edad >=1 and edad <=40:
-            riesgo  = ((edad * prioridad)/100)
-        else:
-            riesgo =  (((edad *prioridad)/100) +5.3)
+                fumadorr =  int(fumadorr)
+       
+                #Peso estatura, esto en funcion de la div de peso entre estatura, obteniedo un punto flotante que se valiad de 0 a 1. Por ende se toma referncia de 0 a 1  
+            pesoestatura = (int(peso) / int(estatura))
+            if  pesoestatura <= (0.25):
+                pesoestatura = 1
+            elif pesoestatura >= (0.26) and pesoestatura <=(0.50):
+                pesoestatura = 2
+            elif pesoestatura >= (0.51) and pesoestatura <=(0.75):
+                pesoestatura = 3;
+            else:
+                pesoestatura = 4
         
-        print(fumador)
-        fumador = int(fumador)
+            #Seccion de calcuala la prioridad para el paciente 
+            prioridad = 0;
+
+            edad =  int(edad)
+            if edad >= 1 and edad <=15:
+                if edad >= 1 and edad <= 5:
+                    prioridad = (pesoestatura + 3)
+                elif edad >= 6 and edad <= 12:
+                    prioridad = (pesoestatura + 2)
+                elif edad >=13 and edad <=15:
+                    prioridad = (pesoestatura + 1)
+
+                elif edad >= 16 and edad <= 40:
+                    if fumadorr > 1:
+                        prioridad = ((fumadorr /4)+ 2)
+                    else:
+                        prioridad = 2
+                elif edad > 41:
+                    if dieta == "Si":
+                        if edad >=60 and edad <= 100:
+                            prioridad = ((edad/20)+4)
+                    else:
+                        prioridad = ((edad /30) +3)
+        
+            #Seccion de calcular el riesgo 
+            if edad >=1 and edad <=40:
+                riesgo  = ((edad * prioridad)/100)
+            else:
+                riesgo =  (((edad *prioridad)/100) +5.3)
+                fumador = int(fumador)
         if fumador == 0:
             fumador = fumadorr  
             estatura = estatura + ' Cm'
@@ -100,7 +157,9 @@ def addpacientes():
             mysql.connection.commit()
     flash('Registro almacenado')
     return redirect(url_for('pacientes'))
-
+    
+    
+    
 @app.route('/verpacientes')
 def ver():
     con = mysql.connection.cursor()

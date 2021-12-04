@@ -8,45 +8,43 @@
         <form class="form-floating" action="/addpacientes" method="POST">
             <div class="row">
                <div class="col-md-12">
-                <h3 class="text-center"> Formulario Pacientes</h3>
-                <div class="form-floating mb-3">
+                <h3 class="text-center"><i class="fas fa-clipboard-check"></i> Formulario Pacientes</h3>
+                <div class="form-floating mb-3 ">
                     <input type="text" class="form-control" name="documento" id="floatingInput" placeholder="Documento"  nKeyUp="return limitar(event,this.value,12)" onKeyDown="return limitar(event,this.value,15)" onkeypress= "return validarNumero(event)">
-                    <label for="floatingInput">Documento</label>
-                    <div class="valid-tooltip">
-                        Looks good!
-                      </div>
+                    <label for="floatingInput"><i class="fas fa-id-card"></i> Documento</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="nombres" id="floatingInput" placeholder="Nombres" onKeyUp="return limitar(event,this.value,60)" onKeyDown="return limitar(event,this.value,60)">
-                    <label for="floatingInput">Nombres</label>
+                    <label for="floatingInput"><i class="fas fa-user"></i> Nombres</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="apellidos" id="floatingInput" placeholder="Apellidos" onKeyUp="return limitar(event,this.value,60)" onKeyDown="return limitar(event,this.value,60)">
-                    <label for="floatingInput">Apellidos</label>
+                    <label for="floatingInput"><i class="fas fa-user"></i> Apellidos</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="edad" id="floatingInput" placeholder="Edad" nKeyUp="return limitar(event,this.value,3)" onKeyDown="return limitar(event,this.value,3)" onkeypress= "return validarNumero(event)">
-                    <label for="floatingInput">Edad</label>
+                    <label for="floatingInput"><i class="fas fa-sort-numeric-up-alt"></i> Edad</label>
                 </div>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" name="direccion" id="floatingInput" placeholder="Direccion" onKeyUp="return limitar(event,this.value,100)" onKeyDown="return limitar(event,this.value,100)">
-                    <label for="floatingInput">Direccion</label>
+                    <label for="floatingInput"><i class="fas fa-map-marked"></i> Direccion</label>
                 </div>
                 </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <select class="form-select" aria-label="Fumador?" name="sexo" id="check2">
-                            <option selected>Genero</option>
+                        <label for=""><i class="fas fa-transgender"></i> Genero</label> <br>
+                        <select class="form-select " aria-label="Fumador?" name="sexo" id="check2">
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
                           </select>
                     </div>
                     <div class="col-md-6">
-                        <select class="form-select" aria-label="Fumador?" name="fumador1" id="check">
-                            <option selected>Eres Fumador</option>
-                            <option value="0">Si</option>
+                        <label for=""> <i class="fas fa-smoking"></i>  Eres Fumador</label> <br>
+                        <select class="form-select " aria-label="Fumador?" name="fumador1" id="check">
                             <option value="1">No</option>
+                            <option value="0">Si</option>
+                            
                           </select>
                     </div>
                 </div>
@@ -54,7 +52,7 @@
                     <div class="col-md-12" hidden id="fumador">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="fumador" id="floatingInput" placeholder="Nombres" nKeyUp="return limitar(event,this.value,2)" onKeyDown="return limitar(event,this.value,2)" onkeypress= "return validarNumero(event)">
-                            <label for="floatingInput">Cuantos años?</label>
+                            <label for="floatingInput"><i class="fas fa-sort-numeric-up-alt"></i> Cuantos años?</label>
                         </div>
                     </div>
                 </div>
@@ -62,23 +60,23 @@
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="estatura" id="floatingInput" placeholder="Nombres" nKeyUp="return limitar(event,this.value,3)" onKeyDown="return limitar(event,this.value,3)" onkeypress= "return validarNumero(event)">
-                            <label for="floatingInput">Estatura en Cm</label>
+                            <label for="floatingInput"><i class="fas fa-sort-numeric-up-alt"></i> Estatura en Cm</label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="peso" id="floatingInput" placeholder="Peso" nKeyUp="return limitar(event,this.value,4)" onKeyDown="return limitar(event,this.value,4)" onkeypress= "return validarNumero(event)">
-                            <label for="floatingInput">Peso en Kg</label>
+                            <label for="floatingInput"><i class="fas fa-sort-numeric-up-alt"></i> Peso en Kg</label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
+                        <label for=""><i class="fas fa-utensils"></i> Haces Dieta</label>
                         <div class="form-floating mb-3">
                             <select class="form-select" aria-label="Dieta?" name="dieta" id="check">
-                                <option selected>Haces Dieta</option>
-                                <option value="Si">Si</option>
                                 <option value="No">No</option>
+                                <option value="Si">Si</option>
                               </select>
                         </div>
                     </div>
@@ -86,7 +84,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="d-grid gap-2 py-4">
-                            <button class="btn btn-primary">Enviar</button>
+                            <button class="btn btn-primary"><i class="fas fa-clipboard-list"></i> Enviar</button>
                         </div>
                     </div>
                 </div>
